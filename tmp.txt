@@ -17,3 +17,74 @@
        .WithOne(e => e.Catalog);
         }
     }
+
+
+public interface ICatalogRepository
+    {
+        void AddCatalog(Catalog catalog);
+        IEnumerable<Catalog> GetAllCatalogs();
+
+        Catalog GetCatalogById(long catalogId);
+
+        void DeleteCatalogById(long catalogId);
+        void UpdateCatalogById(Catalog catalog);
+
+    }
+    
+    
+    
+    
+    public class CatalogRepository : ICatalogRepository
+    {
+        private readonly CatalogContext _dbContext;
+
+        public CatalogRepository(CatalogContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public void AddCatalog(Catalog catalog)
+        {
+            _dbContext.Add(catalog);
+            Save();
+        }
+
+        public void DeleteCatalogById(long catalogId)
+        {
+            var catalog = _dbContext.Catalogs.Find(catalogId);
+            _dbContext.Catalogs.Remove(catalog);
+            Save();
+        }
+
+
+
+        public Catalog GetCatalogById(long catalogId)
+        {
+            var catalog = _dbContext.Catalogs.Include(c => c.ProductList)
+                .FirstOrDefault(x => x.CatalogId == catalogId);
+
+            return catalog;
+
+        }
+
+
+        public IEnumerable<Catalog> GetAllCatalogs()
+        {
+            var catalogs = _dbContext.Catalogs.Include(catalog => catalog.ProductList).ToList();
+
+            return catalogs;
+        }
+
+
+
+        public void Save()
+        {
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateCatalogById(Catalog catalog)
+        {
+            _dbContext.Entry(catalog).State = EntityState.Modified;
+            Save();
+        }
+    }

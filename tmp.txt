@@ -88,3 +88,25 @@ public interface ICatalogRepository
             Save();
         }
     }
+
+
+
+  services.AddDbContext<CatalogContext>(o => o.UseSqlServer(Configuration.GetConnectionString("ProductDBConnString")));
+            #region Swagger
+            services.AddSwaggerGen(c =>
+            {
+                //c.IncludeXmlComments(string.Format(@"{0}CQRSApi.xml", System.AppDomain.CurrentDomain.BaseDirectory));
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ShoppingDenProductAPI",
+                });
+
+            });
+            #endregion
+
+
+            services.AddTransient<ICatalogRepository,CatalogRepository>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);

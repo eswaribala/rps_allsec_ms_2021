@@ -35,3 +35,24 @@ public AppMutation(IEmployeeRepo repository)
                 }
             );
         }
+
+
+
+//mutation($employee: employeeInput!){
+//    createEmployee(employee:$employee){
+//        firstName,
+//    lastName,
+//    middleName,
+//    dOB,
+//  }
+//}
+//{
+//    "employee": {
+//        "employeeName": {
+//            "firstName": "Parameswari",
+//      "lastName": "",
+//      "middleName": ""
+//        },
+//    "dOB": "1970-12-02"
+//    }
+//}

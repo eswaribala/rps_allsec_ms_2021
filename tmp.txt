@@ -8,3 +8,30 @@
             Field<NonNullGraphType<StringGraphType>>("LastName");
         }
     }
+
+
+public AppMutation(IEmployeeRepo repository)
+        {
+            Field<EmployeeType>(
+                "createEmployee",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<EmployeeInputType>>
+                { Name = "employee" }),
+                resolve: context =>
+                {
+                    var employee = context.GetArgument<Employee>("employee");
+                    return repository.AddEmployee(employee);
+                }
+            );
+
+            Field<BooleanGraphType>(
+                "deleteEmployee",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<LongGraphType>> 
+                { Name = "employeeId" }),
+                resolve: context =>
+                {
+                    var employeeId = context.GetArgument<long>("employeeId");
+                    repository.DeleteEmployeeById(employeeId);
+                    return true;
+                }
+            );
+        }

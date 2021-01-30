@@ -56,3 +56,14 @@ public AppMutation(IEmployeeRepo repository)
 //    "dOB": "1970-12-02"
 //    }
 //}
+
+
+mutation($employeeId:Long!){
+  deleteEmployee(employeeId:$employeeId)
+  
+}
+
+
+{
+  "employeeId": 2
+}

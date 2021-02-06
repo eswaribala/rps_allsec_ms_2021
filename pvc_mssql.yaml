@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-mssql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: custom-azure-storage-class
+  resources:
+    requests:
+      storage: 5Gi
